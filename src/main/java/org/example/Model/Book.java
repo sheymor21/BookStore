@@ -7,9 +7,9 @@ public class Book {
     public String Title;
     public String Author;
     public int ReleaseYear;
-    public LocalDate CreateDate;
+    public LocalDate CreatedAt;
 
     public Book() {
-        this.CreateDate = LocalDate.now();
+        this.CreatedAt = LocalDate.now();
     }
 }

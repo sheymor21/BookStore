@@ -1,6 +1,7 @@
 package org.example.Model;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class User {
     public String Id;
@@ -8,9 +9,10 @@ public class User {
     public String FirstName;
     public String LastName;
     public String Email;
-    public LocalDate CreateDate;
+    public LocalDate CreatedAt;
 
     public User() {
-        this.CreateDate = LocalDate.now();
+        this.Id = UUID.randomUUID().toString();
+        this.CreatedAt = LocalDate.now();
     }
 }

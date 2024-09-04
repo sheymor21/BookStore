@@ -10,6 +10,7 @@ public class BooksMenus implements BasicMenu {
 
     public BooksMenus(Scanner scanner) {
         this.scanner = scanner;
+
     }
 
     @Override
@@ -53,7 +54,6 @@ public class BooksMenus implements BasicMenu {
 
     @Override
     public void add() {
-
     }
 
     @Override

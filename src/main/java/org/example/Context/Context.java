@@ -49,8 +49,8 @@ public class Context {
                          )
                         """);
 
-                queries.put("user_books", """
-                        Create Table user_books(
+                queries.put("orders", """
+                        Create Table orders(
                         Id varchar(50) primary key,
                         bookId varchar(50) not null,
                         userId varchar(50) not null,

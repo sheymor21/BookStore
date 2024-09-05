@@ -20,35 +20,40 @@ public class UsersMenus implements BasicMenu {
 
     @Override
     public void menu() {
-        System.out.println("Welcome to Users");
-        System.out.println("[1] -- Show Users");
-        System.out.println("[2] -- Add User");
-        System.out.println("[3] -- Update User");
-        System.out.println("[4] -- Delete User");
-        System.out.println("[z] -- Go Back");
-        System.out.println("Select an option:");
-        String option = scanner.nextLine();
-        switch (option) {
-            case "1":
-                show();
-                break;
-            case "2":
-                add();
-                break;
-            case "3":
-                update();
-                break;
-            case "4":
-                delete();
-                break;
-            case "z":
-                MainMenu mainMenu = new MainMenu();
-                mainMenu.menu();
-                break;
-            default:
-                System.out.println("Invalid option");
-                break;
+        loop:
+        while (true) {
+            System.out.println("Welcome to Users");
+            System.out.println("[1] -- Show Users");
+            System.out.println("[2] -- Add User");
+            System.out.println("[3] -- Update User");
+            System.out.println("[4] -- Delete User");
+            System.out.println("[z] -- Go Back");
+            System.out.println("Select an option:");
+            String option = scanner.nextLine();
+            switch (option) {
+                case "1":
+                    show();
+                    waitForEnter(scanner);
+                    break;
+                case "2":
+                    add();
+                    break;
+                case "3":
+                    update();
+                    break;
+                case "4":
+                    delete();
+                    break;
+                case "z":
+                    MainMenu mainMenu = new MainMenu();
+                    mainMenu.menu();
+                    break loop;
+                default:
+                    System.out.println("Invalid option");
+                    waitForEnter(scanner);
+                    break;
 
+            }
         }
     }
 
@@ -58,7 +63,6 @@ public class UsersMenus implements BasicMenu {
         Iterable<User> users = userService.getAllUsers();
         for (User user : users) {
             String formattedString = String.format("\nDni: %s\nName: %s %s\nEmail: %s", user.Dni, user.FirstName, user.LastName, user.Email);
-            ;
             System.out.println(formattedString);
         }
 
@@ -108,5 +112,10 @@ public class UsersMenus implements BasicMenu {
         User user = userService.getUser(dni);
         userService.deleteUser(user.Id);
         menu();
+    }
+
+    @Override
+    public void waitForEnter(Scanner scanner) {
+        scanner.nextLine();
     }
 }

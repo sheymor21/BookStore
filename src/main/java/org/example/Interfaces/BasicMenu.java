@@ -1,5 +1,7 @@
 package org.example.Interfaces;
 
+import java.util.Scanner;
+
 public interface BasicMenu {
     void menu();
 
@@ -10,4 +12,6 @@ public interface BasicMenu {
     void update();
 
     void delete();
+
+    void waitForEnter(Scanner scanner);
 }

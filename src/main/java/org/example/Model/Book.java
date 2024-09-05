@@ -1,6 +1,7 @@
 package org.example.Model;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class Book {
     public String Id;
@@ -10,6 +11,7 @@ public class Book {
     public LocalDate CreatedAt;
 
     public Book() {
+        this.Id = UUID.randomUUID().toString();
         this.CreatedAt = LocalDate.now();
     }
 }

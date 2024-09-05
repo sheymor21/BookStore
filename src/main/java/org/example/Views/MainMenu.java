@@ -1,7 +1,6 @@
 package org.example.Views;
 
 
-
 import org.example.Interfaces.BasicMenu;
 
 import java.util.Scanner;
@@ -26,9 +25,11 @@ public class MainMenu {
                 usersMenus.menu();
                 break;
             case "z":
+                System.out.println("Goodbye");
                 break;
             default:
                 System.out.println("Invalid option");
+                scanner.nextLine();
                 break;
         }
 

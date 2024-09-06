@@ -30,33 +30,34 @@ public class Context {
                 Map<String, String> queries = new LinkedHashMap<>();
                 queries.put("users", """
                         Create Table users(
-                        Id varchar(50) primary key,
-                        Dni varchar(20) not null,
-                        FirstName varchar(20) not null,
-                        LastName varchar(20) not null,
-                        Email varchar(20) not null,
-                        CreatedAt date not null
+                        user_id varchar(50) primary key,
+                        dni varchar(20) not null,
+                        first_name varchar(20) not null,
+                        last_name varchar(20) not null,
+                        email varchar(20) not null,
+                        created_at date not null
                         );
                         """);
 
                 queries.put("books", """
                         Create Table books(
-                        Id varchar(50) primary key,
-                        Title varchar(20) not null,
-                        Author varchar(20) not null,
-                        ReleaseYear int not null,
-                        CreatedAt date not null
+                        book_id varchar(50) primary key,
+                        title varchar(20) not null,
+                        author varchar(20) not null,
+                        price double precision not null,
+                        release_year int not null,
+                        created_at date not null
                          )
                         """);
 
                 queries.put("orders", """
                         Create Table orders(
-                        Id varchar(50) primary key,
-                        bookId varchar(50) not null,
-                        userId varchar(50) not null,
-                        CreatedAt date not null,
-                        foreign key (bookId) references books(Id),
-                        foreign key (userId) references users(Id)
+                        order_id varchar(50) primary key,
+                        book_id varchar(50) not null,
+                        user_id varchar(50) not null,
+                        created_at date not null,
+                        foreign key (book_id) references books(book_id),
+                        foreign key (user_id) references users(user_id)
                         )
                         """);
                 Statement statement = connection.createStatement();

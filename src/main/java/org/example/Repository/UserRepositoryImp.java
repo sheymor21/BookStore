@@ -23,7 +23,7 @@ public class UserRepositoryImp implements UserRepository {
     public void save(User user) {
         try {
 
-            String sql = "Insert into users(id,dni,firstname,lastname,email,createdat) values (?,?,?,?,?,?)";
+            String sql = "Insert into users(user_id,dni,first_name,last_name,email,created_at) values (?,?,?,?,?,?)";
             PreparedStatement statement = CONNECTION.prepareStatement(sql);
             statement.setString(1, user.Id);
             statement.setString(2, user.Dni);
@@ -42,7 +42,7 @@ public class UserRepositoryImp implements UserRepository {
     @Override
     public void update(User user) {
         try {
-            String sql = "Update users set dni = ?,firstname=?,lastname=?,email=? where id = ?";
+            String sql = "Update users set dni = ?,first_name=?,last_name=?,email=? where user_id = ?";
             PreparedStatement statement = CONNECTION.prepareStatement(sql);
             statement.setString(1, user.Dni);
             statement.setString(2, user.FirstName);
@@ -60,7 +60,7 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public void delete(String id) {
-        String sql = "Delete from users where id = ?";
+        String sql = "Delete from users where user_id = ?";
         try {
             PreparedStatement statement = CONNECTION.prepareStatement(sql);
             statement.setString(1, id);

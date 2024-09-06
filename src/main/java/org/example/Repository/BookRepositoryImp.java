@@ -20,16 +20,17 @@ public class BookRepositoryImp implements BookRepository {
     }
 
     @Override
-    public void save(Book user) {
-        String sql = "Insert into books(id,title,author,releaseyear,createdat) values (?,?,?,?,?)";
+    public void save(Book book) {
+        String sql = "INSERT INTO books (book_id, title, author,price, release_year, created_at) VALUES (?, ?, ?, ?, ?,?)";
         try {
             PreparedStatement statement = CONNECTION.prepareStatement(sql);
-            statement.setString(1, user.Id);
-            statement.setString(2, user.Title);
-            statement.setString(3, user.Author);
-            statement.setInt(4, user.ReleaseYear);
-            var date = java.sql.Date.valueOf(user.CreatedAt);
-            statement.setDate(5, date);
+            statement.setString(1, book.Id);
+            statement.setString(2, book.Title);
+            statement.setString(3, book.Author);
+            statement.setString(4, book.Price);
+            statement.setInt(5, book.ReleaseYear);
+            var date = java.sql.Date.valueOf(book.CreatedAt);
+            statement.setDate(6, date);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -38,14 +39,14 @@ public class BookRepositoryImp implements BookRepository {
     }
 
     @Override
-    public void update(Book user) {
-        String sql = "Update books set title = ?,author=?,releaseyear=? where id = ?";
+    public void update(Book book) {
+        String sql = "Update books set title = ?,author=?,release_year=? where book_id = ?";
         try {
             PreparedStatement statement = CONNECTION.prepareStatement(sql);
-            statement.setString(1, user.Title);
-            statement.setString(2, user.Author);
-            statement.setInt(3, user.ReleaseYear);
-            statement.setString(4, user.Id);
+            statement.setString(1, book.Title);
+            statement.setString(2, book.Author);
+            statement.setInt(3, book.ReleaseYear);
+            statement.setString(4, book.Id);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -58,7 +59,7 @@ public class BookRepositoryImp implements BookRepository {
     @Override
     public void delete(String id) {
 
-        String sql = "Delete from books where id = ?";
+        String sql = "Delete from books where book_id = ?";
         try {
             PreparedStatement statement = CONNECTION.prepareStatement(sql);
             statement.setString(1, id);
@@ -71,39 +72,10 @@ public class BookRepositoryImp implements BookRepository {
 
     @Override
     public Book get(String id) {
-        String sql = "Select * from books where id = ?";
-        try {
-            PreparedStatement statement = CONNECTION.prepareStatement(sql);
-            statement.setString(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            statement.close();
-            if (resultSet.next()) {
-
-                return BookMapper.ToBook(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return null;
+        String sql = "Select * from books where book_id = ?";
+        return getBook(id, sql);
     }
 
-    @Override
-    public Book getByTitle(String title) {
-        String sql = "Select * from books where title = ?";
-        try {
-            PreparedStatement statement = CONNECTION.prepareStatement(sql);
-            statement.setString(1, title);
-            ResultSet resultSet = statement.executeQuery();
-            statement.close();
-            if (resultSet.next()) {
-                return BookMapper.ToBook(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
 
     @Override
     public Iterable<Book> getAll() {
@@ -120,5 +92,22 @@ public class BookRepositoryImp implements BookRepository {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private Book getBook(String parameter, String sql) {
+        try {
+            PreparedStatement statement = CONNECTION.prepareStatement(sql);
+            statement.setString(1, parameter);
+            ResultSet resultSet = statement.executeQuery();
+            statement.close();
+            if (resultSet.next()) {
+
+                return BookMapper.ToBook(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
     }
 }

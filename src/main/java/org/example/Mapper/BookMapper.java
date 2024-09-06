@@ -9,11 +9,12 @@ public abstract class BookMapper {
     public static Book ToBook(ResultSet resultSet) throws SQLException {
         if (resultSet != null) {
             Book book = new Book();
-            book.Id = resultSet.getString("id");
+            book.Id = resultSet.getString("book_id");
             book.Title = resultSet.getString("title");
             book.Author = resultSet.getString("author");
-            book.ReleaseYear = resultSet.getInt("releaseyear");
-            book.CreatedAt = resultSet.getDate("createdat").toLocalDate();
+            book.Price = resultSet.getString("price");
+            book.ReleaseYear = resultSet.getInt("release_year");
+            book.CreatedAt = resultSet.getDate("created_at").toLocalDate();
             return book;
         }
         return null;

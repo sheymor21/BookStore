@@ -1,5 +1,6 @@
 package org.example.Interfaces;
 
+import org.example.Dto.OrderDTO;
 import org.example.Model.Order;
 
 public interface OrderRepository {
@@ -9,11 +10,11 @@ public interface OrderRepository {
 
     void delete(String id);
 
-    Order get(String id);
+    OrderDTO get(String id);
 
-    Order getByBook(String Title);
+    OrderDTO getByBook(String Title);
 
-    Order getByUser(String Dni);
+    OrderDTO getByUser(String Dni);
 
-    Iterable<Order> getAll();
+    Iterable<OrderDTO> getAll();
 }

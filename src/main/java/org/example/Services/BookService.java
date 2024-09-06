@@ -3,6 +3,9 @@ package org.example.Services;
 import org.example.Interfaces.BookRepository;
 import org.example.Model.Book;
 
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 public class BookService {
     private final BookRepository bookRepository;
 
@@ -26,7 +29,8 @@ public class BookService {
         return bookRepository.get(id);
     }
 
-    public Iterable<Book> getAllBooks() {
-        return bookRepository.getAll();
+    public List<Book> getAllBooks() {
+        Iterable<Book> books = bookRepository.getAll();
+        return StreamSupport.stream(books.spliterator(), false).toList();
     }
 }

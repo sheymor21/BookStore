@@ -7,6 +7,7 @@ public class Book {
     public String Id;
     public String Title;
     public String Author;
+    public String Price;
     public int ReleaseYear;
     public LocalDate CreatedAt;
 

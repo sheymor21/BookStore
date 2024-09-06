@@ -4,6 +4,9 @@ package org.example.Services;
 import org.example.Interfaces.UserRepository;
 import org.example.Model.User;
 
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 public class UserService {
 
     private final UserRepository userRepository;
@@ -29,8 +32,9 @@ public class UserService {
         return userRepository.get(id);
     }
 
-    public Iterable<User> getAllUsers() {
-        return userRepository.getAll();
+    public List<User> getAllUsers() {
+        Iterable<User> users = userRepository.getAll();
+        return StreamSupport.stream(users.spliterator(), false).toList();
     }
 
 

@@ -6,6 +6,7 @@ import org.example.Model.User;
 import org.example.Repository.UserRepositoryImp;
 import org.example.Services.UserService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class UsersMenus implements BasicMenu {
@@ -32,21 +33,33 @@ public class UsersMenus implements BasicMenu {
             String option = scanner.nextLine();
             switch (option) {
                 case "1":
-                    show();
+                    if (userExists()) {
+                        show();
+                    } else {
+                        System.out.println("No users found");
+                    }
                     waitForEnter(scanner);
                     break;
                 case "2":
                     add();
                     break;
                 case "3":
-                    update();
+                    if (userExists()) {
+                        update();
+                    } else {
+                        System.out.println("No users found");
+                        waitForEnter(scanner);
+                    }
                     break;
                 case "4":
-                    delete();
+                    if (userExists()) {
+                        delete();
+                    } else {
+                        System.out.println("No users found");
+                        waitForEnter(scanner);
+                    }
                     break;
                 case "z":
-                    MainMenu mainMenu = new MainMenu();
-                    mainMenu.menu();
                     break loop;
                 default:
                     System.out.println("Invalid option");
@@ -55,6 +68,8 @@ public class UsersMenus implements BasicMenu {
 
             }
         }
+        MainMenu mainMenu = MainMenu.getInstance();
+        mainMenu.menu();
     }
 
     @Override
@@ -81,7 +96,6 @@ public class UsersMenus implements BasicMenu {
         user.LastName = scanner.nextLine();
         System.out.println("User Email:");
         user.Email = scanner.nextLine();
-        scanner.close();
         userService.createUser(user);
     }
 
@@ -92,14 +106,21 @@ public class UsersMenus implements BasicMenu {
         System.out.println("Search by Dni: ");
         String dni = scanner.nextLine();
         User user = userService.getUser(dni);
-        System.out.printf("\nActual FirstName: %s\nNew FirstName:", user.FirstName);
-        user.FirstName = scanner.nextLine();
-        System.out.printf("\nActual LastName: %s\nNew LastName:", user.FirstName);
-        user.LastName = scanner.nextLine();
-        System.out.printf("\nActual Email: %s\nNew Email:", user.FirstName);
-        user.Email = scanner.nextLine();
-        scanner.close();
-        userService.updateUser(user);
+        if (user == null) {
+
+            System.out.println("That Dni doesn't exist");
+            waitForEnter(scanner);
+            update();
+        } else {
+            System.out.printf("\nActual FirstName: %s\nNew FirstName:", user.FirstName);
+            user.FirstName = scanner.nextLine();
+            System.out.printf("\nActual LastName: %s\nNew LastName:", user.FirstName);
+            user.LastName = scanner.nextLine();
+            System.out.printf("\nActual Email: %s\nNew Email:", user.FirstName);
+            user.Email = scanner.nextLine();
+            userService.updateUser(user);
+
+        }
 
     }
 
@@ -110,12 +131,24 @@ public class UsersMenus implements BasicMenu {
         System.out.println("Search by Dni: ");
         String dni = scanner.nextLine();
         User user = userService.getUser(dni);
-        userService.deleteUser(user.Id);
-        menu();
+        if (user == null) {
+            System.out.println("That Dni doesn't exist");
+            waitForEnter(scanner);
+            delete();
+
+        } else {
+
+            userService.deleteUser(user.Id);
+        }
     }
 
     @Override
     public void waitForEnter(Scanner scanner) {
         scanner.nextLine();
+    }
+
+    private boolean userExists() {
+        List<User> users = userService.getAllUsers();
+        return !users.isEmpty();
     }
 }

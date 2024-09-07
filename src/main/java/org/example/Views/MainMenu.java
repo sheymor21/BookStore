@@ -7,10 +7,17 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-    public MainMenu()
-    {
+    private static MainMenu instance;
 
+    public static MainMenu getInstance() {
+        if (instance == null) {
+            instance = new MainMenu();
+            return instance;
+        }
+        return instance;
     }
+
+
     public void menu() {
         BasicMenu basicMenu;
         Scanner scanner = new Scanner(System.in);
@@ -44,4 +51,5 @@ public class MainMenu {
         }
 
     }
+
 }

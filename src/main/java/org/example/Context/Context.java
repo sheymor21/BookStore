@@ -19,7 +19,8 @@ public class Context {
 
     public static Context getInstance() {
         if (instance == null) {
-            return new Context();
+            instance = new Context();
+            return instance;
         }
         return instance;
     }
@@ -56,8 +57,8 @@ public class Context {
                         book_id varchar(50) not null,
                         user_id varchar(50) not null,
                         created_at date not null,
-                        foreign key (book_id) references books(book_id),
-                        foreign key (user_id) references users(user_id)
+                        foreign key (book_id) references books(book_id) on delete cascade,
+                        foreign key (user_id) references users(user_id) on delete cascade
                         )
                         """);
                 Statement statement = connection.createStatement();

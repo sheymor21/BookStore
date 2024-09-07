@@ -8,7 +8,7 @@ public class Main {
         Context context = Context.getInstance();
         context.createDatabase();
 
-        MainMenu mainMenu = new MainMenu();
+        MainMenu mainMenu = MainMenu.getInstance();
         mainMenu.menu();
     }
 }

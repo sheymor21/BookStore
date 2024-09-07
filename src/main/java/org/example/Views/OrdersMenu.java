@@ -13,6 +13,7 @@ import org.example.Services.BookService;
 import org.example.Services.OrderService;
 import org.example.Services.UserService;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -44,18 +45,30 @@ public class OrdersMenu implements BasicMenu {
             String option = this.scanner.nextLine();
             switch (option) {
                 case "1":
-                    show();
-                    waitForEnter(scanner);
+                    if (orderExists()) {
+                        show();
+                    } else {
+                        System.out.println("Order does not exist");
+                    }
                     break;
                 case "2":
                     add();
                     break;
                 case "3":
-                    update();
+                    if (orderExists()) {
+                        update();
+                    } else {
+                        System.out.println("Order does not exist");
+                    }
+                    break;
+                case "4":
+                    if (orderExists()) {
+                        delete();
+                    } else {
+                        System.out.println("Order does not exist");
+                    }
                     break;
                 case "z":
-                    MainMenu mainMenu = new MainMenu();
-                    mainMenu.menu();
                     break loop;
                 default:
                     System.out.println("Invalid option");
@@ -63,6 +76,8 @@ public class OrdersMenu implements BasicMenu {
                     break;
             }
         }
+        MainMenu mainMenu = MainMenu.getInstance();
+        mainMenu.menu();
 
     }
 
@@ -70,7 +85,6 @@ public class OrdersMenu implements BasicMenu {
     public void show() {
         loop:
         while (true) {
-            Scanner scanner = new Scanner(System.in);
             OrderDTO order;
             System.out.println("welcome to show orders");
             System.out.println("[1] -- Show All");
@@ -94,28 +108,40 @@ public class OrdersMenu implements BasicMenu {
                     System.out.println("Search by Id:");
                     String id = scanner.nextLine();
                     order = orderService.get(id);
-                    formattedString = String.format("\nClient Name: %s\nBook Name: %s\nAuthor: %s\nPrice: %s\nDate: %s", order.UserName, order.BookTitle, order.BookAuthor, order.BookPrice, order.PurchaseDate);
-                    System.out.println(formattedString);
+                    if (order != null) {
+
+                        formattedString = String.format("\nClient Name: %s\nBook Name: %s\nAuthor: %s\nPrice: %s\nDate: %s", order.UserName, order.BookTitle, order.BookAuthor, order.BookPrice, order.PurchaseDate);
+                        System.out.println(formattedString);
+                    } else {
+                        System.out.println("That id does not exist");
+                    }
                     waitForEnter(scanner);
                     break;
                 case "3":
                     System.out.println("Search by Book Title:");
                     String title = scanner.nextLine();
                     order = orderService.getByBook(title);
-                    formattedString = String.format("\nClient Name: %s\nBook Name: %s\nAuthor: %s\nPrice: %s\nDate: %s", order.UserName, order.BookTitle, order.BookAuthor, order.BookPrice, order.PurchaseDate);
-                    System.out.println(formattedString);
+                    if (order != null) {
+                        formattedString = String.format("\nClient Name: %s\nBook Name: %s\nAuthor: %s\nPrice: %s\nDate: %s", order.UserName, order.BookTitle, order.BookAuthor, order.BookPrice, order.PurchaseDate);
+                        System.out.println(formattedString);
+                    } else {
+                        System.out.println("That book does not exist");
+                    }
                     waitForEnter(scanner);
                     break;
                 case "4":
                     System.out.println("Search by User Dni:");
                     String dni = scanner.nextLine();
                     order = orderService.getByUser(dni);
-                    formattedString = String.format("\nClient Name: %s\nBook Name: %s\nAuthor: %s\nPrice: %s\nDate: %s", order.UserName, order.BookTitle, order.BookAuthor, order.BookPrice, order.PurchaseDate);
-                    System.out.println(formattedString);
+                    if (order != null) {
+                        formattedString = String.format("\nClient Name: %s\nBook Name: %s\nAuthor: %s\nPrice: %s\nDate: %s", order.UserName, order.BookTitle, order.BookAuthor, order.BookPrice, order.PurchaseDate);
+                        System.out.println(formattedString);
+                    } else {
+                        System.out.println("That book does not exist");
+                    }
                     waitForEnter(scanner);
                     break;
                 case "z":
-                    menu();
                     break loop;
                 default:
                     System.out.println("Invalid option");
@@ -127,7 +153,6 @@ public class OrdersMenu implements BasicMenu {
 
     @Override
     public void add() {
-        Scanner scanner = new Scanner(System.in);
         UserBookIds ids = selectBookAndUser(scanner);
 
         Order order = new Order();
@@ -140,23 +165,33 @@ public class OrdersMenu implements BasicMenu {
 
     @Override
     public void update() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to Update Orders");
         OrderDTO orderDTO = selectOrderDTO(scanner);
         UserBookIds ids = selectBookAndUser(scanner);
         Order order = new Order();
-        order.Id = orderDTO.getId();
-        order.BookId = ids.getBookId();
-        order.UserId = ids.getUserId();
-        orderService.update(order);
+        if (orderDTO != null) {
+            order.Id = orderDTO.getId();
+            order.BookId = ids.getBookId();
+            order.UserId = ids.getUserId();
+            orderService.update(order);
+        } else {
+            System.out.println("Order does not exist");
+            waitForEnter(scanner);
+            update();
+        }
     }
 
     @Override
     public void delete() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to Delete Orders");
         OrderDTO orderDTO = selectOrderDTO(scanner);
-        orderService.delete(orderDTO.getId());
+        if (orderDTO != null) {
+            orderService.delete(orderDTO.getId());
+        } else {
+            System.out.println("Order does not exist");
+            waitForEnter(scanner);
+            delete();
+        }
 
     }
 
@@ -174,8 +209,24 @@ public class OrdersMenu implements BasicMenu {
             i++;
         }
         System.out.println("Select by number: ");
-        int orderIndex = scanner.nextInt();
-        return orders.get(orderIndex - 1);
+        int orderIndex;
+        try {
+            orderIndex = scanner.nextInt();
+            if (orderIndex > orders.size() || orderIndex < 1) {
+                System.out.println("Invalid option");
+                waitForEnter(scanner);
+                selectOrderDTO(scanner);
+            } else {
+
+                return orders.get(orderIndex - 1);
+            }
+            return null;
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid option");
+            waitForEnter(scanner);
+            selectOrderDTO(scanner);
+            return null;
+        }
     }
 
     private void printUsers(Iterable<User> users) {
@@ -216,6 +267,11 @@ public class OrdersMenu implements BasicMenu {
         userBookIds.setBookId(bookId);
         userBookIds.setUserId(userId);
         return userBookIds;
+    }
+
+    private boolean orderExists() {
+        List<OrderDTO> orders = orderService.getAll();
+        return !orders.isEmpty();
     }
 
 }

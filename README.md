@@ -4,7 +4,6 @@ Book Store console application using java 22.
 # Dependencies
 
 - Java 22.0.2
-- 
 # How to Run
 
 To run the Book Store console application, follow these steps:

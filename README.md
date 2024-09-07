@@ -1,35 +1,47 @@
 # BookStore
 
-Simple API for Booking management using .Net core and Docker
-
+Book Store console application using java 22.
 # Dependencies
 
-- Go 1.22.4
-- MongoDriver 1.16.0
-
+- Java 22.0.2
+- 
 # How to Run
 
-If you don't have Golang download from  [Go](https://go.dev)
+To run the Book Store console application, follow these steps:
 
-If you have Golang , download the project in your PC:
+1. **Prerequisite**:
 
-~~~
-git clone https://github.com/sheymor21/EducationSystemApi.git
-~~~
+   Make sure you have Java 22.0.2 installed on your system. If you don't have it installed, you can download it from
+   the [official Java website](https://www.oracle.com/java/technologies/javase-downloads.html) and follow the
+   installation instructions for your operating system.
 
-## Parameters
 
-- DB_U (Required)  is the db user
-- DB_P (Required)  is the db password
-- DB_URI (Optional)  it the mongo db Uri, by default it is "mongodb://localhost:27017"
-- DB_NAME (Optional) is the name of the database, by default it is "EducationSystem"
+2. **Clone the Repository**:
 
-For run the project use:
+   Open your terminal or command prompt and clone the repository by running:
+   ```sh
+   git clone https://github.com/sheymor21/BookStore.git
+   ```
 
-~~~
-go run cmd/api/main.go -DB_U (your db user) -DB_P (your db password)
-~~~
+3. **Navigate to the Project Directory**:
 
+   ```sh
+   cd BookStore
+   ```
+
+4. **Compile the Application**:
+
+   Make sure you have Java 22.0.2 installed and set up. Then, compile the Java files:
+   ```sh
+   javac -d bin src/com/bookstore/*.java
+   ```
+
+5. **Run the Application**:
+
+   From the `bin` directory, run the main class:
+   ```sh
+   java com.bookstore.Main
+   ```
 # Author
 
 - [sheymor21](https://github.com/sheymor21)
